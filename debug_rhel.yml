@@ -1,6 +1,7 @@
 - name: debug test for rhel hosts
   hosts: all
   #hosts: "{{ ansible_limit | default(omit) }}"
+  become: true
   gather_facts: true
 
   tasks:
