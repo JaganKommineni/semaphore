@@ -1,7 +1,7 @@
 - name: debug test for rhel hosts
   hosts: all
   #hosts: "{{ ansible_limit | default(omit) }}"
-  gather_facts: false
+  gather_facts: true
 
   tasks:
     - name: debug
@@ -12,27 +12,5 @@
       debug:
         msg: "debugging ansible facts - {{ ansible_facts }}"    
         
-    - name: test create tmpfile
-      tempfile:
-        suffix: _test
-        state: file
-      register: tmpfile
 
-    - block:
-        - name: write something to file
-          copy:
-            content: "This is a test"
-            dest: "{{ tmpfile.path }}"
-        - name: GOTTA SLURP IT
-          slurp:
-            src: "{{ tmpfile.path }}"
-          register: tmpdata
-        - name: print out file contents
-          debug:
-            msg: "Temp file content - {{ tmpdata['content'] }}"
-      always:
-        - name: delete tempfile
-          file: 
-            path: "{{ tmpfile.path }}"
-            state: absent
     
